@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import msgpack
 import urllib.parse
 import config
+import re
 
 
 class Jamyunggo:
@@ -101,7 +102,13 @@ class Jamyunggo:
                 else:
                     url = None
                 text = self.get_text(url)
-                return module.notify(title, url=url, text=text)
+                return module.notify(
+                    self.module_name, title, url=url, text=text)
+
+    def img_src_replace(self, body_url, body):
+        for img in body.find_all("img"):
+            img["src"] = urllib.parse.urljoin(body_url, img["src"])
+        return body
 
     def get_text(self, body_url):
         if self.body_fn:
@@ -111,7 +118,7 @@ class Jamyunggo:
                 body_html = self.session.get(body_url)
             body_text = body_html.text
             body_soup = BeautifulSoup(body_text, 'html.parser')
-            return self.body_fn(body_soup)
+            return str(self.img_src_replace(body_url, self.body_fn(body_soup)))
 
         else:
             return None
