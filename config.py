@@ -1,1 +1,1 @@
-HOME_URL = "https://pusnow.github.io"
+HOME_URL = "https://pusnow.github.io/jamyunggo"
