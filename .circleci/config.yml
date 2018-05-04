@@ -53,23 +53,21 @@ jobs:
       - deploy:
           name: Deploy
           command: |
-            if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
-              git config --global user.email $GH_EMAIL
-              git config --global user.name $GH_NAME
+            git config --global user.email $GH_EMAIL
+            git config --global user.name $GH_NAME
 
-              git clone $CIRCLE_REPOSITORY_URL out
+            git clone $CIRCLE_REPOSITORY_URL out
 
-              cd out
-              git checkout gh-pages || git checkout --orphan gh-pages
-              git rm -rf .
-              cd ..
+            cd out
+            git checkout gh-pages || git checkout --orphan gh-pages
+            git rm -rf .
+            cd ..
 
-              cp -a cache/* out/
+            cp -a cache/* out/
 
-              cd out
+            cd out
 
-              git add -A
-              git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+            git add -A
+            git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
 
-              git push origin gh-pages
-            fi
+            git push origin gh-pages
