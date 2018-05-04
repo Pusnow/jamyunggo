@@ -83,6 +83,8 @@ class Jamyunggo:
             if cached_result.status_code == 200:
                 content = cached_result.content
                 self.cached_titles = msgpack.unpackb(content, raw=False)
+            else:
+                print("Cache Error non 200 code")
         except:
             print("Cache Load Error!")
 
