@@ -64,7 +64,7 @@ jobs:
             cd ..
 
             cp -a cache/* out/
-
+            mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
             cd out
 
             git add -A
