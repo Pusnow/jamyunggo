@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 import msgpack
 import urllib.parse
 import config
-import re
 
 
 class Jamyunggo:
@@ -37,8 +36,8 @@ class Jamyunggo:
         self.cached_titles = []
 
         self.session = requests.session()
-
-        self.load_cache()
+        if config.LOAD_CACHE:
+            self.load_cache()
 
     def __repr__(self):
         return "<Jamyunggo %s >" % self.url
@@ -78,8 +77,8 @@ class Jamyunggo:
 
     def load_cache(self):
         try:
-            cached_result = requests.get(
-                config.HOME_URL + "/" + self.module_name + ".cache")
+            cached_result = requests.get(config.HOME_URL + "/" +
+                                         self.module_name + ".cache")
             if cached_result.status_code == 200:
                 content = cached_result.content
                 self.cached_titles = msgpack.unpackb(content, raw=False)
