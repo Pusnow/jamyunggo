@@ -36,8 +36,8 @@ class Jamyunggo:
         self.cached_titles = []
 
         self.session = requests.session()
-        if config.LOAD_CACHE:
-            self.load_cache()
+
+        self.load_cache()
 
     def __repr__(self):
         return "<Jamyunggo %s >" % self.url
@@ -76,19 +76,30 @@ class Jamyunggo:
             cache.write(msgpack.packb(self.titles, use_bin_type=True))
 
     def load_cache(self):
-        try:
-            cached_result = requests.get(config.HOME_URL + "/" +
-                                         self.module_name + ".cache")
-            if cached_result.status_code == 200:
-                content = cached_result.content
-                self.cached_titles = msgpack.unpackb(content, raw=False)
-            else:
-                print("Cache Error non 200 code")
-        except:
-            print("Cache Load Error!")
 
-        with open("cache/" + self.module_name + ".cache", "wb") as cache:
-            cache.write(msgpack.packb(self.cached_titles, use_bin_type=True))
+        if config.REMOTE_CACHE:
+            try:
+                cached_result = requests.get(config.HOME_URL + "/" +
+                                             self.module_name + ".cache")
+                if cached_result.status_code == 200:
+                    content = cached_result.content
+                    self.cached_titles = msgpack.unpackb(content, raw=False)
+                else:
+                    print("Cache Error non 200 code")
+            except:
+                print("Cache Load Error!")
+
+            with open("cache/" + self.module_name + ".cache", "wb") as cache:
+                cache.write(
+                    msgpack.packb(self.cached_titles, use_bin_type=True))
+        else:
+            try:
+                with open("cache/" + self.module_name + ".cache",
+                          "rb") as cache:
+                    self.cached_titles = msgpack.unpackb(
+                        cache.read(), raw=False)
+            except FileNotFoundError:
+                self.cached_titles = []
 
     def notify(self, node, backend_list):
         for backend in self.backends:

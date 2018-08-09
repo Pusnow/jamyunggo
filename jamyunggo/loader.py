@@ -8,24 +8,50 @@ class Loader:
     def __init__(self):
         self.jamyunggo_list = []
         self.backend_list = {}
+
+        self.jamyunggo_module = []
+        self.backend_module = []
         pathlib.Path('cache').mkdir(parents=True, exist_ok=True)
 
     def load_backends(self):
+
+        module_names = {
+            module.__name__: module
+            for module in self.backend_module
+        }
+
+        self.backend_module = []
         for py_file in os.listdir("jamyunggo/backends"):
             if py_file.endswith(".py") and not py_file.startswith("_"):
                 module_name = py_file[:-3]
-                module = importlib.import_module(
-                    ".backends." + module_name, package="jamyunggo")
+                module_path = "jamyunggo.backends." + module_name
 
+                if module_path in module_names:
+                    module = importlib.reload(module_names[module_path])
+                else:
+                    module = importlib.import_module(
+                        ".backends." + module_name, package="jamyunggo")
+                self.backend_module.append(module)
                 self.backend_list[module_name] = module
 
     def load(self):
         self.load_backends()
+        module_names = {
+            module.__name__: module
+            for module in self.jamyunggo_module
+        }
+        self.jamyunggo_module = []
+        self.jamyunggo_list = []
+
         for py_file in os.listdir("pages"):
             if py_file.endswith(".py"):
                 module_name = py_file[:-3]
-                module = importlib.import_module("pages." + module_name)
-
+                module_path = "jamyunggo.backends." + module_name
+                if module_path in module_names:
+                    module = importlib.reload(module_names[module_path])
+                else:
+                    module = importlib.import_module("pages." + module_name)
+                self.jamyunggo_module.append(module)
                 headers = module.HEADERS if hasattr(module, "HEADERS") else {}
                 body_url_fn = module.BODY_URL_FN if hasattr(
                     module, "BODY_URL_FN") else None
