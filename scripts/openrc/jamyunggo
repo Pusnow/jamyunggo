@@ -2,7 +2,7 @@
 
 supervisor=supervise-daemon
 name=jamyunggo
-command="python3 ${JAMYUNGGO_PATH:-/var/lib/jamyunggo}/run.py""
+command="python3 ${JAMYUNGGO_PATH:-/var/lib/jamyunggo}/run.py"
 command_user="${JAMYUNGGO_USER:-jamyunggo}"
 supervise_daemon_args="--env JAMYUNGGO_WORK_DIR='${JAMYUNGGO_WORK_DIR:-/var/lib/jamyunggo}' --chdir '${JAMYUNGGO_WORK_DIR:-/var/lib/jamyunggo}' --stdout '${JAMYUNGGO_LOG_FILE:-/var/log/jamyunggo/jamyunggo.log}' --stderr '${JAMYUNGGO_LOG_FILE:-/var/log/jamyunggo/jamyunggo-error.log}'"
 pidfile="/run/jamyunggo.pid"
