@@ -3,7 +3,7 @@ Example Eatslim
 
 """
 import re
-BACKENDS = ["gmail"]
+BACKENDS = ["smtp"]
 
 URL = "http://www.eatsslim.co.kr/mobile/event/index.jsp"
 FIND_ALL_ARGS = {"class_": "info"}
@@ -16,7 +16,8 @@ def TITLE_FN(node):
 
 
 def BODY_URL_FN(node):
-    return node.find_previous_siblings("div", class_="img")[0].find_all("a")[0]["href"]
+    return node.find_previous_siblings(
+        "div", class_="img")[0].find_all("a")[0]["href"]
 
 
 def BODY_FN(soup):
