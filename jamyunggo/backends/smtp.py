@@ -25,7 +25,7 @@ def notify(module_name, title, text=None, url=None):
             msg['To'] = receivor
 
             msg.attach(MIMEText(html, "html"))
-            s.sendmail(config.GMAIL_ID, receivor, msg.as_string())
+            s.sendmail(config.SMTP_ID, receivor, msg.as_string())
         s.quit()
 
     return True
