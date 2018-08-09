@@ -86,6 +86,10 @@ class Jamyunggo:
                     self.cached_titles = msgpack.unpackb(content, raw=False)
                 else:
                     print("Cache Error non 200 code")
+            except SystemExit:
+                raise SystemExit
+            except KeyboardInterrupt:
+                raise KeyboardInterrupt
             except:
                 print("Cache Load Error!")
 
