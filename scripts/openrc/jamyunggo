@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+
+supervisor=supervise-daemon
+name=jamyunggo
+command="python3 ${JAMYUNGGO_PATH}/run.py""
+command_user="${JAMYUNGGO_USER:-jamyunggo}"
+supervise_daemon_args="--env JAMYUNGGO_WORK_DIR='${JAMYUNGGO_WORK_DIR:-/var/lib/jamyunggo}' --chdir '${JAMYUNGGO_WORK_DIR:-/var/lib/jamyunggo}' --stdout '${JAMYUNGGO_LOG_FILE:-/var/log/jamyunggo.log}' --stderr '${JAMYUNGGO_LOG_FILE:-/var/log/jamyunggo-error.log}'"
+pidfile="/run/jamyunggo.pid"
+
+depend() {
+        use logger dns
+        need net
+        after firewall
+}
