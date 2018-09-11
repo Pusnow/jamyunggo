@@ -21,7 +21,7 @@ class Jamyunggo:
                  find_all_args,
                  title_fn,
                  headers={},
-                 body_url_fn=None,
+                 body_url_fn,
                  body_fn=None):
         self.module_name = module_name
         self.backends = backends
@@ -33,7 +33,8 @@ class Jamyunggo:
         self.headers = headers
 
         self.nodes = None
-        self.cached_titles = []
+        self.cached_urls = []
+        self.urls = []
 
         self.session = requests.session()
 
@@ -55,16 +56,16 @@ class Jamyunggo:
         for node in main_soup.find_all(**self.find_all_args):
             self.nodes.append(node)
 
-        self.titles = []
+        self.urls = []
         for node in self.nodes:
-            self.titles.append(self.title_fn(node))
+            self.urls.append(self.body_url_fn(node))
 
-        if self.cached_titles:
-            first = self.cached_titles[0]
+        if self.cached_urls:
+            first = self.cached_urls[0]
         else:
             first = None
 
-        for title, node in zip(self.titles, self.nodes):
+        for title, node in zip(self.urls, self.nodes):
             if title == first:
                 break
             self.notify(node, backend_list)
@@ -73,7 +74,7 @@ class Jamyunggo:
 
     def save_cache(self):
         with open("cache/" + self.module_name + ".cache", "wb") as cache:
-            cache.write(msgpack.packb(self.titles, use_bin_type=True))
+            cache.write(msgpack.packb(self.urls, use_bin_type=True))
 
     def load_cache(self):
 
@@ -83,7 +84,7 @@ class Jamyunggo:
                                              self.module_name + ".cache")
                 if cached_result.status_code == 200:
                     content = cached_result.content
-                    self.cached_titles = msgpack.unpackb(content, raw=False)
+                    self.cached_urls = msgpack.unpackb(content, raw=False)
                 else:
                     print("Cache Error non 200 code")
             except SystemExit:
@@ -94,16 +95,14 @@ class Jamyunggo:
                 print("Cache Load Error!")
 
             with open("cache/" + self.module_name + ".cache", "wb") as cache:
-                cache.write(
-                    msgpack.packb(self.cached_titles, use_bin_type=True))
+                cache.write(msgpack.packb(self.cached_urls, use_bin_type=True))
         else:
             try:
                 with open("cache/" + self.module_name + ".cache",
                           "rb") as cache:
-                    self.cached_titles = msgpack.unpackb(
-                        cache.read(), raw=False)
+                    self.cached_urls = msgpack.unpackb(cache.read(), raw=False)
             except FileNotFoundError:
-                self.cached_titles = []
+                self.cached_urls = []
 
     def notify(self, node, backend_list):
         for backend in self.backends:
@@ -111,12 +110,7 @@ class Jamyunggo:
                 module = backend_list[backend]
                 title = self.title_fn(node)
 
-                if self.body_url_fn:
-                    url = urllib.parse.urljoin(self.url,
-                                               self.body_url_fn(node))
-
-                else:
-                    url = None
+                url = urllib.parse.urljoin(self.url, self.body_url_fn(node))
                 text = self.get_text(url)
                 return module.notify(
                     self.module_name, title, url=url, text=text)
