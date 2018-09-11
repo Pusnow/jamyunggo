@@ -20,8 +20,8 @@ class Jamyunggo:
                  url,
                  find_all_args,
                  title_fn,
-                 headers={},
                  body_url_fn,
+                 headers={},
                  body_fn=None):
         self.module_name = module_name
         self.backends = backends
