@@ -17,7 +17,8 @@ def notify(module_name, title, text=None, url=None):
     img_urls = []
     if url:
         text_msg += '<a href="%s">%s</a>\n' % (url, url.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp"))
-    text_msg += bleach.clean(text, tags=['a','b','i','strong','code','pre'], strip=True)[:200]
+    # Telegram Skip message
+    #text_msg += bleach.clean(text, tags=['a','b','i','strong','code','pre'], strip=True)[:200]
     
     # TODO: Fix photo timeout bug
     #soup = BeautifulSoup(text, 'html.parser')
