@@ -56,12 +56,12 @@ class Jamyunggo:
         for node in main_soup.find_all(**self.find_all_args):
             self.nodes.append(node)
 
-        print(self.url, self.nodes)
         self.titles = []
         for node in self.nodes:
             self.titles.append(self.title_fn(node))
 
-
+        if not self.titles:
+            return
 
         for title, node in zip(self.titles, self.nodes):
             if title == self.cached_last:
