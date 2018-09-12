@@ -3,7 +3,7 @@ Example EZone (IITP)
 
 """
 import re
-BACKENDS = ["smtp"]
+BACKENDS = ["telegram"]
 
 URL = "https://ezone.iitp.kr/common/anno/list"
 FIND_ALL_ARGS = {"class_": "bbs_cnt"}

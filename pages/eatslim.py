@@ -3,7 +3,7 @@ Example Eatslim
 
 """
 import re
-BACKENDS = ["smtp"]
+BACKENDS = ["telegram"]
 
 URL = "http://www.eatsslim.co.kr/mobile/event/index.jsp"
 FIND_ALL_ARGS = {"class_": "info"}
