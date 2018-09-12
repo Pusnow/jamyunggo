@@ -1,5 +1,7 @@
 import config
 import telegram
+import bleach
+from bs4 import BeautifulSoup
 
 
 BOT = telegram.Bot(token = config.TELEGRAM_TOKEN)
@@ -11,14 +13,18 @@ for update in BOT.get_updates():
 
 
 def notify(module_name, title, text=None, url=None):
-    html = "<h2>%s</h2>" % title
+    text_msg = "<b>%s</b>\n" % title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp")
+    img_urls = []
     if url:
-        html += '<a href="%s">%s</a>' % (url, url)
-
-    if text:
-        html += text
-
+        text_msg += '<a href="%s">%s</a>\n' % (url, url.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp"))
+    text_msg += bleach.clean(text, tags=['a','b','i','strong','code','pre'], strip=True)
+    soup = BeautifulSoup(main_text, 'html.parser')
+    for img in body.find_all("img"):
+            img_urls.append(img["src"])
 
     for chat_id in CHAT_SET:
-        BOT.send_message(chat_id, html, parse_mode="HTML")
+        BOT.send_message(chat_id, text_msg, parse_mode="HTML")
+        for img_url in img_urls:
+            BOT.send_photo(chat_id, img_url, caption=img_url, disable_notification=True)
+
     return True
