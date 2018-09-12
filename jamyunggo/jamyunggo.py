@@ -113,6 +113,7 @@ class Jamyunggo:
                     url = urllib.parse.urljoin(self.url, body_url)
                     text = self.get_text(url)
                 else:
+                    url = None
                     text = ""
                 return module.notify(
                     self.module_name, title, url=url, text=text)
