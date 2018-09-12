@@ -58,7 +58,7 @@ class Jamyunggo:
 
         self.titles = []
         for node in self.nodes:
-            self.titles.append(self.body_url_fn(node))
+            self.titles.append(self.title_fn(node))
 
 
 
