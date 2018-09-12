@@ -20,5 +20,5 @@ def notify(module_name, title, text=None, url=None):
 
 
     for chat_id in CHAT_SET:
-        bot.send_message(chat_id, html, parse_mode="HTML")
+        BOT.send_message(chat_id, html, parse_mode="HTML")
     return True
