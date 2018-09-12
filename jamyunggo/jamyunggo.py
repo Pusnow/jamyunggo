@@ -107,9 +107,10 @@ class Jamyunggo:
             if backend in backend_list:
                 module = backend_list[backend]
                 title = self.title_fn(node)
-
-                url = urllib.parse.urljoin(self.url, self.body_url_fn(node))
-                if url:
+                body_url = self.body_url_fn(node)
+                
+                if body_url:
+                    url = urllib.parse.urljoin(self.url, body_url)
                     text = self.get_text(url)
                 else:
                     text = ""
