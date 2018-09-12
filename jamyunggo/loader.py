@@ -43,7 +43,12 @@ class Loader:
         self.jamyunggo_module = []
         self.jamyunggo_list = []
 
-        for py_file in os.listdir("pages"):
+        dirs = os.listdir("pages")
+
+        if os.path.isdir("privates"):
+            dirs += os.listdir("privates")
+
+        for py_file in dirs:
             if py_file.endswith(".py"):
                 module_name = py_file[:-3]
                 module_path = "jamyunggo.backends." + module_name
