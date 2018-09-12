@@ -25,6 +25,6 @@ def notify(module_name, title, text=None, url=None):
     for chat_id in CHAT_SET:
         BOT.send_message(chat_id, text_msg, parse_mode="HTML")
         for img_url in img_urls:
-            BOT.send_photo(chat_id, img_url, caption=img_url, disable_notification=True)
+            BOT.send_photo(chat_id, img_url,  disable_notification=True, timeout=60)
 
     return True
