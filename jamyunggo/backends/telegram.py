@@ -12,7 +12,7 @@ for update in BOT.get_updates():
         CHAT_SET.add(update['message']['chat']['id'])
 
 with open("telegram_last.txt","w") as telegram_last:
-    telegram_last.write("\n".join(list(CHAT_SET)))
+    telegram_last.write("\n".join([ str(id) for id in CHAT_SET]))
 
 def notify(module_name, title, text=None, url=None):
     text_msg = "<b>%s</b>\n" % title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp")
