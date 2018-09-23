@@ -6,11 +6,13 @@ from bs4 import BeautifulSoup
 
 BOT = telegram.Bot(token = config.TELEGRAM_TOKEN)
 USER_WHITELIST = set([a.lower() for a in config.TELEGRAM_WHITELIST])
-CHAT_SET = set()
+CHAT_SET = set(config.TELEGRAM_CHAT_ID)
 for update in BOT.get_updates():
     if update['message']['chat']['username'].lower() in USER_WHITELIST:
         CHAT_SET.add(update['message']['chat']['id'])
 
+with open("telegram_last.txt","w") as telegram_last:
+    telegram_last.write("\n".join(list(CHAT_SET)))
 
 def notify(module_name, title, text=None, url=None):
     text_msg = "<b>%s</b>\n" % title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp")
