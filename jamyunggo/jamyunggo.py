@@ -69,21 +69,29 @@ class Jamyunggo:
 
         if self.param:
             try:
-                cached_last_int = int(self.cached_last)
+                cached_last = int(self.cached_last)
             except:
-                cached_last_int = 0
+                cached_last = self.cached_last
             for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
                 query = urllib.parse.urlsplit(url).query
                 params = urllib.parse.parse_qsl(query)
 
-                id = int(dict(params)[self.param])
+                param = dict(params)[self.param]
 
-                if cached_last_int >= id:
-                    break
+                try:
+                    id = int(param)
+                    if cached_last >= id:
+                        break
+                except:
+                    if cached_last == param:
+                        break
+                    
                 self.notify(node, backend_list)
                 if i == 0:
-                    cached_last_int = id
-            self.cached_last = str(cached_last_int)
+                    cached_last = param
+
+
+            self.cached_last = str(cached_last)
         else:
             cached_last = self.cached_last
             for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
