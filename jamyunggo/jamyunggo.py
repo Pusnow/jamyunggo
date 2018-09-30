@@ -67,7 +67,7 @@ class Jamyunggo:
             return
 
 
-        if self.param:
+        if self.param and not self.param.startswith("JMG_"):
             try:
                 cached_last = int(self.cached_last)
             except:
@@ -95,9 +95,28 @@ class Jamyunggo:
 
 
             self.cached_last = str(cached_last)
+        elif self.param:
+            cached_last = self.cached_last
+            attr = self.param[4:].lower()
+            for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
+                if not url:
+                    # TODO: handle deleted posts
+                    break
+                param = getattr(urllib.parse.urlsplit(url),attr)
+            
+                if cached_last == param:
+                    break
+                    
+                self.notify(node, backend_list)
+                if i == 0:
+                    cached_last = param
+                self.cached_last = str(cached_last)
         else:
             cached_last = self.cached_last
             for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
+                if not url:
+                    # TODO: handle deleted posts
+                    break
                 if url == self.cached_last:
                     break
                 self.notify(node, backend_list)
