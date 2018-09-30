@@ -66,7 +66,6 @@ class Jamyunggo:
         if not self.body_urls:
             return
 
-
         if self.param and not self.param.startswith("JMG_"):
             try:
                 cached_last = int(self.cached_last)
@@ -88,11 +87,10 @@ class Jamyunggo:
                 except:
                     if cached_last == param:
                         break
-                    
+
                 self.notify(node, backend_list)
                 if i == 0:
                     cached_last = param
-
 
             self.cached_last = str(cached_last)
         elif self.param:
@@ -102,11 +100,11 @@ class Jamyunggo:
                 if not url:
                     # TODO: handle deleted posts
                     break
-                param = getattr(urllib.parse.urlsplit(url),attr)
-            
+                param = getattr(urllib.parse.urlsplit(url), attr)
+
                 if cached_last == param:
                     break
-                    
+
                 self.notify(node, backend_list)
                 if i == 0:
                     cached_last = param
@@ -135,8 +133,7 @@ class Jamyunggo:
     def load_cache(self):
         try:
             with open(
-                    "cache/" + self.module_name + ".cache",
-                    "r",
+                    "cache/" + self.module_name + ".cache", "r",
                     encoding="utf8") as cache:
                 self.cached_last = cache.read()
         except FileNotFoundError:
@@ -156,7 +153,11 @@ class Jamyunggo:
                     url = None
                     text = ""
                 return module.notify(
-                    self.module_name, title, url=url, text=text, name=self.name)
+                    self.module_name,
+                    title,
+                    url=url,
+                    text=text,
+                    name=self.name)
 
     def img_src_replace(self, body_url, body):
         for img in body.find_all("img"):
