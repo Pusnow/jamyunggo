@@ -93,6 +93,7 @@ class Jamyunggo:
                     cached_last = param
 
             self.cached_last = str(cached_last)
+            self.save_cache()
         elif self.param:
             cached_last = self.cached_last
             attr = self.param[4:].lower()
@@ -108,7 +109,8 @@ class Jamyunggo:
                 self.notify(node, backend_list)
                 if i == 0:
                     cached_last = param
-                self.cached_last = str(cached_last)
+            self.cached_last = str(cached_last)
+            self.save_cache()
         else:
             cached_last = self.cached_last
             for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
@@ -121,8 +123,9 @@ class Jamyunggo:
                 if i == 0:
                     cached_last = url
             self.cached_last = cached_last
+            self.save_cache()
 
-        self.save_cache()
+        
 
     def save_cache(self):
         with open(
