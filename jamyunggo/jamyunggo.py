@@ -67,10 +67,7 @@ class Jamyunggo:
             return
 
         if self.param and not self.param.startswith("JMG_"):
-            try:
-                cached_last = int(self.cached_last)
-            except:
-                cached_last = self.cached_last
+            cached_last = self.cached_last
             for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
                 if not url:
                     # TODO: handle deleted posts
@@ -82,10 +79,10 @@ class Jamyunggo:
 
                 try:
                     id = int(param)
-                    if cached_last >= id:
+                    if int(self.cached_last) >= id:
                         break
                 except:
-                    if cached_last == param:
+                    if self.cached_last == param:
                         break
 
                 self.notify(node, backend_list)
