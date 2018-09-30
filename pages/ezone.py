@@ -8,6 +8,7 @@ BACKENDS = ["telegram"]
 NAME = "IITP 공고"
 URL = "https://ezone.iitp.kr/common/anno/list"
 FIND_ALL_ARGS = {"class_": "bbs_cnt"}
+PARAM = None
 
 HEADERS = {}
 

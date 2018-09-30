@@ -8,6 +8,7 @@ BACKENDS = ["telegram"]
 NAME = "잇슬림"
 URL = "http://www.eatsslim.co.kr/mobile/event/index.jsp"
 FIND_ALL_ARGS = {"class_": "info"}
+PARAM = "id"
 
 HEADERS = {}
 

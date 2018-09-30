@@ -3,7 +3,6 @@ Main Jamyunggo
 """
 import requests
 from bs4 import BeautifulSoup
-import msgpack
 import urllib.parse
 import config
 
@@ -23,7 +22,8 @@ class Jamyunggo:
                  body_url_fn,
                  headers={},
                  body_fn=None,
-                 name=None):
+                 name=None,
+                 param=None):
         self.module_name = module_name
         self.backends = backends
         self.url = url
@@ -33,6 +33,7 @@ class Jamyunggo:
         self.body_fn = body_fn
         self.headers = headers
         self.name = name
+        self.param = param
 
         self.nodes = None
         self.cached_last = ""
@@ -65,10 +66,18 @@ class Jamyunggo:
         if not self.titles:
             return
 
-        for title, node in zip(self.titles, self.nodes):
-            if title == self.cached_last:
-                break
-            self.notify(node, backend_list)
+
+        if self.param:
+            try:
+                cached_last_int = int(self.cached_last)
+            except:
+                cached_last_int = 0
+            pass
+        else:
+            for title, node in zip(self.titles, self.nodes):
+                if title == self.cached_last:
+                    break
+                self.notify(node, backend_list)
 
         self.save_cache()
 
@@ -79,34 +88,14 @@ class Jamyunggo:
             cache.write(self.titles[0])
 
     def load_cache(self):
-
-        if config.REMOTE_CACHE:
-            try:
-                cached_result = requests.get(config.HOME_URL + "/" +
-                                             self.module_name + ".cache")
-                if cached_result.status_code == 200:
-                    content = cached_result.content
-                    self.cached_last = msgpack.unpackb(content, raw=False)
-                else:
-                    print("Cache Error non 200 code")
-            except SystemExit:
-                raise SystemExit
-            except KeyboardInterrupt:
-                raise KeyboardInterrupt
-            except:
-                print("Cache Load Error!")
-
-            with open("cache/" + self.module_name + ".cache", "w") as cache:
-                cache.write(self.cached_last)
-        else:
-            try:
-                with open(
-                        "cache/" + self.module_name + ".cache",
-                        "r",
-                        encoding="utf8") as cache:
-                    self.cached_last = cache.read()
-            except FileNotFoundError:
-                self.cached_last = ""
+        try:
+            with open(
+                    "cache/" + self.module_name + ".cache",
+                    "r",
+                    encoding="utf8") as cache:
+                self.cached_last = cache.read()
+        except FileNotFoundError:
+            self.cached_last = ""
 
     def notify(self, node, backend_list):
         for backend in self.backends:
