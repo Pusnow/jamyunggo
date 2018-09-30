@@ -124,7 +124,7 @@ class Jamyunggo:
                     url = None
                     text = ""
                 return module.notify(
-                    self.module_name, title, url=url, text=text, name=name)
+                    self.module_name, title, url=url, text=text, name=self.name)
 
     def img_src_replace(self, body_url, body):
         for img in body.find_all("img"):
