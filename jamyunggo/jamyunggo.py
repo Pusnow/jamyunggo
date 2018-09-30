@@ -73,7 +73,9 @@ class Jamyunggo:
         self.save_cache()
 
     def save_cache(self):
-        with open("cache/" + self.module_name + ".cache", "w", encoding="utf8") as cache:
+        with open(
+                "cache/" + self.module_name + ".cache", "w",
+                encoding="utf8") as cache:
             cache.write(self.titles[0])
 
     def load_cache(self):
@@ -98,11 +100,13 @@ class Jamyunggo:
                 cache.write(self.cached_last)
         else:
             try:
-                with open("cache/" + self.module_name + ".cache",
-                          "r", encoding="utf8") as cache:
-                    self.cached_last  = cache.read()
+                with open(
+                        "cache/" + self.module_name + ".cache",
+                        "r",
+                        encoding="utf8") as cache:
+                    self.cached_last = cache.read()
             except FileNotFoundError:
-                self.cached_last  = ""
+                self.cached_last = ""
 
     def notify(self, node, backend_list):
         for backend in self.backends:
@@ -110,7 +114,7 @@ class Jamyunggo:
                 module = backend_list[backend]
                 title = self.title_fn(node)
                 body_url = self.body_url_fn(node)
-                
+
                 if body_url:
                     url = urllib.parse.urljoin(self.url, body_url)
                     text = self.get_text(url)

@@ -43,10 +43,10 @@ class Loader:
         self.jamyunggo_module = []
         self.jamyunggo_list = []
 
-        dirs = [ ("pages", a) for a in os.listdir("pages")]
+        dirs = [("pages", a) for a in os.listdir("pages")]
 
         if os.path.isdir("privates"):
-            dirs += [ ("privates", a) for a in os.listdir("privates")]
+            dirs += [("privates", a) for a in os.listdir("privates")]
 
         for super_dir, py_file in dirs:
             if py_file.endswith(".py"):
@@ -55,7 +55,8 @@ class Loader:
                 if module_path in module_names:
                     module = importlib.reload(module_names[module_path])
                 else:
-                    module = importlib.import_module(super_dir + "." + module_name)
+                    module = importlib.import_module(super_dir + "." +
+                                                     module_name)
                 self.jamyunggo_module.append(module)
                 headers = module.HEADERS if hasattr(module, "HEADERS") else {}
                 body_url_fn = module.BODY_URL_FN if hasattr(
