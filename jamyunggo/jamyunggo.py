@@ -37,7 +37,7 @@ class Jamyunggo:
 
         self.nodes = None
         self.cached_last = ""
-        self.titles = []
+        self.body_urls = []
 
         self.session = requests.session()
 
@@ -59,11 +59,11 @@ class Jamyunggo:
         for node in main_soup.find_all(**self.find_all_args):
             self.nodes.append(node)
 
-        self.titles = []
+        self.body_urls = []
         for node in self.nodes:
-            self.titles.append(self.title_fn(node))
+            self.body_urls.append(self.body_url_fn(node))
 
-        if not self.titles:
+        if not self.body_urls:
             return
 
 
@@ -72,12 +72,28 @@ class Jamyunggo:
                 cached_last_int = int(self.cached_last)
             except:
                 cached_last_int = 0
-            pass
-        else:
-            for title, node in zip(self.titles, self.nodes):
-                if title == self.cached_last:
+            for url, node in zip(self.body_urls, self.nodes):
+                query = urllib.parse.urlsplit(url).query
+                params = urllib.parse.parse_qsl(query)
+
+                if self.param not in params:
+                    raise
+            
+                id = int(params[self.param])
+
+                if cached_last_int >= id:
                     break
                 self.notify(node, backend_list)
+                cached_last_int = id
+            self.cached_last = str(cached_last_int)
+        else:
+            cached_last = self.cached_last
+            for url, node in zip(self.body_urls, self.nodes):
+                if url == self.cached_last:
+                    break
+                self.notify(node, backend_list)
+                cached_last = url
+            self.cached_last = cached_last
 
         self.save_cache()
 
@@ -85,7 +101,7 @@ class Jamyunggo:
         with open(
                 "cache/" + self.module_name + ".cache", "w",
                 encoding="utf8") as cache:
-            cache.write(self.titles[0])
+            cache.write(self.cached_last)
 
     def load_cache(self):
         try:
