@@ -22,4 +22,4 @@ def BODY_URL_FN(node):
 
 
 def BODY_FN(soup):
-    return None
+    return ""
