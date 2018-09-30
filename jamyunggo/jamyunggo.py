@@ -76,9 +76,6 @@ class Jamyunggo:
                 query = urllib.parse.urlsplit(url).query
                 params = urllib.parse.parse_qsl(query)
 
-                if self.param not in params:
-                    raise
-            
                 id = int(params[self.param])
 
                 if cached_last_int >= id:
