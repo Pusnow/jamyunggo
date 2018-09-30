@@ -1,5 +1,5 @@
 """
-Example Hibrain Resarch
+Example Hibrain Research
 
 """
 import re
