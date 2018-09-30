@@ -22,4 +22,10 @@ def BODY_URL_FN(node):
 
 
 def BODY_FN(soup):
-    return ""
+    result = soup.find_all("table", class_="contentSummaryInfo")
+    if result:
+        return result[0]
+    else:
+        return None
+
+    
