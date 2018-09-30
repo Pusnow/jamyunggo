@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-def notify(module_name, title, text=None, url=None):
+def notify(module_name, title, text=None, url=None, name=None):
 
     with smtplib.SMTP_SSL('smtp.gmail.com') as s:
         s.login(config.GMAIL_ID, config.GMAIL_PW)
@@ -20,7 +20,10 @@ def notify(module_name, title, text=None, url=None):
         msg = MIMEMultipart('alternative')
 
         for receivor in config.GMAIL_RECEIVERS:
-            msg['Subject'] = "[" + module_name + "] " + title
+            if name:
+                msg['Subject'] = "[" + name + "] " + title
+            else:
+                msg['Subject'] = "[" + module_name + "] " + title
             msg['From'] = "Jamyunggo"
             msg['To'] = receivor
 

@@ -22,7 +22,8 @@ class Jamyunggo:
                  title_fn,
                  body_url_fn,
                  headers={},
-                 body_fn=None):
+                 body_fn=None,
+                 name=None):
         self.module_name = module_name
         self.backends = backends
         self.url = url
@@ -31,6 +32,7 @@ class Jamyunggo:
         self.body_url_fn = body_url_fn
         self.body_fn = body_fn
         self.headers = headers
+        self.name = name
 
         self.nodes = None
         self.cached_last = ""
@@ -116,7 +118,7 @@ class Jamyunggo:
                     url = None
                     text = ""
                 return module.notify(
-                    self.module_name, title, url=url, text=text)
+                    self.module_name, title, url=url, text=text, name=name)
 
     def img_src_replace(self, body_url, body):
         for img in body.find_all("img"):

@@ -6,7 +6,7 @@ from email.header import Header
 from email.utils import formataddr
 
 
-def notify(module_name, title, text=None, url=None):
+def notify(module_name, title, text=None, url=None, name=None):
 
     with smtplib.SMTP_SSL(config.SMTP_SERVER) as s:
         s.login(config.SMTP_ID, config.SMTP_PW)
@@ -22,7 +22,10 @@ def notify(module_name, title, text=None, url=None):
         msg = MIMEMultipart('alternative')
 
         for receivor in config.SMTP_RECEIVERS:
-            msg['Subject'] = "[" + module_name + "] " + title
+            if name:
+                msg['Subject'] = "[" + name + "] " + title
+            else:
+                msg['Subject'] = "[" + module_name + "] " + title
             msg['From'] = formataddr((str(Header("Jamyunggo", 'utf-8')),
                                       config.SMTP_ID))
             msg['To'] = receivor

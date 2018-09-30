@@ -70,7 +70,8 @@ class Loader:
                     title_fn=module.TITLE_FN,
                     headers=headers,
                     body_url_fn=body_url_fn,
-                    body_fn=body_fn)
+                    body_fn=body_fn,
+                    name=module.NAME)
 
                 self.jamyunggo_list.append(jamyunggo)
 

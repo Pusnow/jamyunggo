@@ -14,8 +14,11 @@ for update in BOT.get_updates():
 with open("telegram_last.txt","w") as telegram_last:
     telegram_last.write("\n".join([ str(id) for id in CHAT_SET]))
 
-def notify(module_name, title, text=None, url=None):
-    text_msg = "<b>%s</b>\n" % title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp")
+def notify(module_name, title, text=None, url=None, name=None):
+    if name:
+        text_msg = "<b>[%s]%s</b>\n" % (name, title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp"))
+    else:
+        text_msg = "<b>%s</b>\n" % title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp")
     img_urls = []
     if url:
         text_msg += '<a href="%s">%s</a>\n' % (url, url.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp"))
