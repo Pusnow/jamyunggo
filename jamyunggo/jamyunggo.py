@@ -73,6 +73,9 @@ class Jamyunggo:
             except:
                 cached_last = self.cached_last
             for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
+                if not url:
+                    # TODO: handle deleted posts
+                    break
                 query = urllib.parse.urlsplit(url).query
                 params = urllib.parse.parse_qsl(query)
 
