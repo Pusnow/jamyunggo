@@ -72,7 +72,7 @@ class Jamyunggo:
                 cached_last_int = int(self.cached_last)
             except:
                 cached_last_int = 0
-            for url, node in zip(self.body_urls, self.nodes):
+            for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
                 query = urllib.parse.urlsplit(url).query
                 params = urllib.parse.parse_qsl(query)
 
@@ -81,15 +81,17 @@ class Jamyunggo:
                 if cached_last_int >= id:
                     break
                 self.notify(node, backend_list)
-                cached_last_int = id
+                if i == 0:
+                    cached_last_int = id
             self.cached_last = str(cached_last_int)
         else:
             cached_last = self.cached_last
-            for url, node in zip(self.body_urls, self.nodes):
+            for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
                 if url == self.cached_last:
                     break
                 self.notify(node, backend_list)
-                cached_last = url
+                if i == 0:
+                    cached_last = url
             self.cached_last = cached_last
 
         self.save_cache()
