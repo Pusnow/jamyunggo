@@ -76,7 +76,7 @@ class Jamyunggo:
                 query = urllib.parse.urlsplit(url).query
                 params = urllib.parse.parse_qsl(query)
 
-                id = int(params[self.param])
+                id = int(dict(params)[self.param])
 
                 if cached_last_int >= id:
                     break
