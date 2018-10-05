@@ -69,21 +69,21 @@ class Jamyunggo:
             return
 
         cached_last = self.cached_last
-        for i, (url, param, node) in enumerate(zip(self.body_urls, self.params, self.nodes)):
+        for url, param, node in zip(self.body_urls, self.params, self.nodes):
             if not url or not param:
                 # TODO: handle deleted posts
                 break
             if type(param) == int:
+                cached_last = max(int(cached_last), param) # max int
                 if int(self.cached_last) >= param:
-                    break
+                    continue
             elif type(param) == str:
+                cached_last = self.params[0] # first str
                 if self.cached_last == param:
                     break
             else:
                 print("ERROR: PARAM PARSE ERROR")
             self.notify(node, backend_list)
-            if i == 0:
-                cached_last = str(param)
 
         self.cached_last = str(cached_last)
         self.save_cache()
