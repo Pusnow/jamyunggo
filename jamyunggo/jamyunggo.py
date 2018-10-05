@@ -77,7 +77,7 @@ class Jamyunggo:
                 if int(self.cached_last) >= param:
                     break
             elif type(param) == str:
-                if (self.cached_last == param:
+                if self.cached_last == param:
                     break
             else:
                 print("ERROR: PARAM PARSE ERROR")
