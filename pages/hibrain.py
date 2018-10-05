@@ -31,5 +31,6 @@ def BODY_FN(soup):
 def PARAM_FN(node):
     url = BODY_URL_FN(node)
     attr = "path"
-    param = getattr(urllib.parse.urlsplit(url), attr)
-    return param
+    path = getattr(urllib.parse.urlsplit(url), attr)
+    param = path.rsplit('/', 1)[-1]
+    return int(param)
