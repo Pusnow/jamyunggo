@@ -63,7 +63,7 @@ class Loader:
                     module, "BODY_URL_FN") else None
                 body_fn = module.BODY_FN if hasattr(module,
                                                     "BODY_FN") else None
-                param_fn = module.PARAM if hasattr(module, "PARAM_FN") else None
+                param_fn = module.PARAM_FN if hasattr(module, "PARAM_FN") else None
                 jamyunggo = Jamyunggo(
                     module_name=module_name,
                     backends=module.BACKENDS,
