@@ -3,12 +3,12 @@ Example Eatslim
 
 """
 import re
+import urllib
 BACKENDS = ["telegram"]
 
 NAME = "잇슬림"
 URL = "http://www.eatsslim.co.kr/mobile/event/index.jsp"
 FIND_ALL_ARGS = {"class_": "info"}
-PARAM = "id"
 
 HEADERS = {}
 
@@ -28,3 +28,12 @@ def BODY_FN(soup):
         return result[0]
     else:
         return None
+
+def PARAM_FN(node):
+    url = BODY_URL_FN(node)
+    query = urllib.parse.urlsplit(url).query
+    params = urllib.parse.parse_qsl(query)
+    param = dict(params)["id"]
+    return int(param)
+
+    

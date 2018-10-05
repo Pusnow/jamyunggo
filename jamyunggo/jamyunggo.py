@@ -23,7 +23,7 @@ class Jamyunggo:
                  headers={},
                  body_fn=None,
                  name=None,
-                 param=None):
+                 param_fn=None):
         self.module_name = module_name
         self.backends = backends
         self.url = url
@@ -33,7 +33,7 @@ class Jamyunggo:
         self.body_fn = body_fn
         self.headers = headers
         self.name = name
-        self.param = param
+        self.param_fn = param_fn
 
         self.nodes = None
         self.cached_last = ""
@@ -60,70 +60,34 @@ class Jamyunggo:
             self.nodes.append(node)
 
         self.body_urls = []
+        self.params = []
         for node in self.nodes:
             self.body_urls.append(self.body_url_fn(node))
+            self.params.append(self.param_fn(node))
 
         if not self.body_urls:
             return
 
-        if self.param and not self.param.startswith("JMG_"):
-            cached_last = self.cached_last
-            for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
-                if not url:
-                    # TODO: handle deleted posts
+        cached_last = self.cached_last
+        for i, (url, param, node) in enumerate(zip(self.body_urls, self.params, self.nodes)):
+            if not url or not param:
+                # TODO: handle deleted posts
+                break
+            if type(param) == int:
+                if int(self.cached_last) >= param:
                     break
-                query = urllib.parse.urlsplit(url).query
-                params = urllib.parse.parse_qsl(query)
-
-                param = dict(params)[self.param]
-
-                try:
-                    id = int(param)
-                    if int(self.cached_last) >= id:
-                        break
-                except:
-                    if self.cached_last == param:
-                        break
-
-                self.notify(node, backend_list)
-                if i == 0:
-                    cached_last = param
-
-            self.cached_last = str(cached_last)
-            self.save_cache()
-        elif self.param:
-            cached_last = self.cached_last
-            attr = self.param[4:].lower()
-            for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
-                if not url:
-                    # TODO: handle deleted posts
+            elif type(param) == str:
+                if (self.cached_last == param:
                     break
-                param = getattr(urllib.parse.urlsplit(url), attr)
+            else:
+                print("ERROR: PARAM PARSE ERROR")
+            self.notify(node, backend_list)
+            if i == 0:
+                cached_last = str(param)
 
-                if cached_last == param:
-                    break
-
-                self.notify(node, backend_list)
-                if i == 0:
-                    cached_last = param
-            self.cached_last = str(cached_last)
-            self.save_cache()
-        else:
-            cached_last = self.cached_last
-            for i, (url, node) in enumerate(zip(self.body_urls, self.nodes)):
-                if not url:
-                    # TODO: handle deleted posts
-                    break
-                if url == self.cached_last:
-                    break
-                self.notify(node, backend_list)
-                if i == 0:
-                    cached_last = url
-            self.cached_last = cached_last
-            self.save_cache()
-
-        
-
+        self.cached_last = str(cached_last)
+        self.save_cache()
+  
     def save_cache(self):
         with open(
                 "cache/" + self.module_name + ".cache", "w",

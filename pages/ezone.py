@@ -3,12 +3,12 @@ Example EZone (IITP)
 
 """
 import re
+import urllib
 BACKENDS = ["telegram"]
 
 NAME = "IITP 공고"
 URL = "https://ezone.iitp.kr/common/anno/list"
 FIND_ALL_ARGS = {"class_": "bbs_cnt"}
-PARAM = "JMG_QUERY"
 
 HEADERS = {}
 
@@ -28,3 +28,10 @@ def BODY_FN(soup):
         return result[0]
     else:
         return None
+
+
+def PARAM_FN(node):
+    url = BODY_URL_FN(node)
+    attr = "query"
+    param = getattr(urllib.parse.urlsplit(url), attr)
+    return param
