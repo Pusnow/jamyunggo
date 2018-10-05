@@ -74,6 +74,10 @@ class Jamyunggo:
                 # TODO: handle deleted posts
                 break
             if type(param) == int:
+                if not cached_last:
+                    cached_last = 0
+                if not self.cached_last:
+                    self.cached_last = 0
                 cached_last = max(int(cached_last), param) # max int
                 if int(self.cached_last) >= param:
                     continue
