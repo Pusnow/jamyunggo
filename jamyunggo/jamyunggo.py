@@ -23,7 +23,8 @@ class Jamyunggo:
                  headers={},
                  body_fn=None,
                  name=None,
-                 param_fn=None):
+                 param_fn=None,
+                 blacklist=[]):
         self.module_name = module_name
         self.backends = backends
         self.url = url
@@ -38,6 +39,7 @@ class Jamyunggo:
         self.nodes = None
         self.cached_last = ""
         self.body_urls = []
+        self.blacklist = blacklist
 
         self.session = requests.session()
 
@@ -78,11 +80,11 @@ class Jamyunggo:
                     cached_last = 0
                 if not self.cached_last:
                     self.cached_last = 0
-                cached_last = max(int(cached_last), param) # max int
+                cached_last = max(int(cached_last), param)  # max int
                 if int(self.cached_last) >= param:
                     continue
             elif type(param) == str:
-                cached_last = self.params[0] # first str
+                cached_last = self.params[0]  # first str
                 if self.cached_last == param:
                     break
             else:
@@ -91,7 +93,7 @@ class Jamyunggo:
 
         self.cached_last = str(cached_last)
         self.save_cache()
-  
+
     def save_cache(self):
         with open(
                 "cache/" + self.module_name + ".cache", "w",
@@ -108,19 +110,26 @@ class Jamyunggo:
             self.cached_last = ""
 
     def notify(self, node, backend_list):
+
+        title = self.title_fn(node)
+
+        for black in self.blacklist:
+            if black in title:
+                return
+
+        body_url = self.body_url_fn(node)
+        if body_url:
+            url = urllib.parse.urljoin(self.url, body_url)
+            text = ""
+            # text = self.get_text(url)
+        else:
+            url = None
+            text = ""
+
         for backend in self.backends:
             if backend in backend_list:
                 module = backend_list[backend]
-                title = self.title_fn(node)
-                body_url = self.body_url_fn(node)
 
-                if body_url:
-                    url = urllib.parse.urljoin(self.url, body_url)
-                    text = ""
-                    # text = self.get_text(url)
-                else:
-                    url = None
-                    text = ""
                 return module.notify(
                     self.module_name,
                     title,
