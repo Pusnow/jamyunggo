@@ -116,7 +116,8 @@ class Jamyunggo:
 
                 if body_url:
                     url = urllib.parse.urljoin(self.url, body_url)
-                    text = self.get_text(url)
+                    text = ""
+                    # text = self.get_text(url)
                 else:
                     url = None
                     text = ""
