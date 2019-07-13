@@ -1,7 +1,7 @@
 #!/bin/sh
 
 GIT_DIR=/app/pages
-GIT_REPO=
+GIT_REPO="${REPO}"
 
 if [ ! -d $GIT_DIR ]
 then
