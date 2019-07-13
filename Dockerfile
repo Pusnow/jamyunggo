@@ -15,6 +15,7 @@ COPY run.sh /app/
 COPY config.py /app/
 COPY config.json.template /config/config.json
 
+ENV REPO ""
 
 VOLUME ["/config", "/data"]
 
