@@ -11,6 +11,7 @@ RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
 COPY jamyunggo /app/jamyunggo
 COPY run.py /app/
+COPY run.sh /app/
 COPY config.py /app/
 COPY config.json.template /config/config.json
 
