@@ -1,7 +1,10 @@
-from . import Jamyunggo
 import importlib
 import os
 import pathlib
+
+from config import config
+
+from . import Jamyunggo
 
 
 class Loader:
@@ -11,7 +14,7 @@ class Loader:
 
         self.jamyunggo_module = []
         self.backend_module = []
-        pathlib.Path('cache').mkdir(parents=True, exist_ok=True)
+        pathlib.Path(config["CACHE_DIR"]).mkdir(parents=True, exist_ok=True)
 
     def load_backends(self):
 
@@ -29,8 +32,9 @@ class Loader:
                 if module_path in module_names:
                     module = importlib.reload(module_names[module_path])
                 else:
-                    module = importlib.import_module(
-                        ".backends." + module_name, package="jamyunggo")
+                    module = importlib.import_module(".backends." +
+                                                     module_name,
+                                                     package="jamyunggo")
                 self.backend_module.append(module)
                 self.backend_list[module_name] = module
 
@@ -43,10 +47,10 @@ class Loader:
         self.jamyunggo_module = []
         self.jamyunggo_list = []
 
-        dirs = [("pages", a) for a in os.listdir("pages")]
-
-        if os.path.isdir("privates"):
-            dirs += [("privates", a) for a in os.listdir("privates")]
+        dirs = []
+        for repo in config["REPOS"]:
+            if os.path.isdir(repo):
+                dirs = [(repo, a) for a in os.listdir(repo)]
 
         for super_dir, py_file in dirs:
             if py_file.endswith(".py"):
@@ -67,18 +71,17 @@ class Loader:
                                                       "PARAM_FN") else None
                 blacklist = module.BLACKLIST if hasattr(module,
                                                         "BLACKLIST") else []
-                jamyunggo = Jamyunggo(
-                    module_name=module_name,
-                    backends=module.BACKENDS,
-                    url=module.URL,
-                    find_all_args=module.FIND_ALL_ARGS,
-                    title_fn=module.TITLE_FN,
-                    headers=headers,
-                    body_url_fn=body_url_fn,
-                    body_fn=body_fn,
-                    name=module.NAME,
-                    param_fn=param_fn,
-                    blacklist=blacklist)
+                jamyunggo = Jamyunggo(module_name=module_name,
+                                      backends=module.BACKENDS,
+                                      url=module.URL,
+                                      find_all_args=module.FIND_ALL_ARGS,
+                                      title_fn=module.TITLE_FN,
+                                      headers=headers,
+                                      body_url_fn=body_url_fn,
+                                      body_fn=body_fn,
+                                      name=module.NAME,
+                                      param_fn=param_fn,
+                                      blacklist=blacklist)
 
                 self.jamyunggo_list.append(jamyunggo)
 

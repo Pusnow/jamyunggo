@@ -1,30 +1,34 @@
-import config
-import telegram
 import bleach
+import telegram
 from bs4 import BeautifulSoup
 
+from config import config
 
-BOT = telegram.Bot(token = config.TELEGRAM_TOKEN)
-USER_WHITELIST = set([a.lower() for a in config.TELEGRAM_WHITELIST])
-CHAT_SET = set(config.TELEGRAM_CHAT_ID)
+BOT = telegram.Bot(token=config["TELEGRAM"]["TOKEN"])
+USER_WHITELIST = set([a.lower() for a in config["TELEGRAM"]["WHITELIST"]])
+CHAT_SET = set(config["TELEGRAM"]["CHAT_ID"])
 for update in BOT.get_updates():
     if update['message']['chat']['username'].lower() in USER_WHITELIST:
         CHAT_SET.add(update['message']['chat']['id'])
 
-with open("telegram_last.txt","w") as telegram_last:
-    telegram_last.write("\n".join([ str(id) for id in CHAT_SET]))
+with open(config["TELEGRAM"]["CONFIG"], "w") as telegram_last:
+    telegram_last.write("\n".join([str(id) for id in CHAT_SET]))
+
 
 def notify(module_name, title, text=None, url=None, name=None):
     if name:
-        text_msg = "<b>[%s]%s</b>\n" % (name, title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp"))
+        text_msg = "<b>[%s]%s</b>\n" % (name, title.replace(
+            "<", "&lt").replace(">", "&gt").replace("&", "&amp"))
     else:
-        text_msg = "<b>%s</b>\n" % title.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp")
+        text_msg = "<b>%s</b>\n" % title.replace("<", "&lt").replace(
+            ">", "&gt").replace("&", "&amp")
     img_urls = []
     if url:
-        text_msg += '<a href="%s">%s</a>\n' % (url, url.replace("<", "&lt").replace(">", "&gt").replace("&", "&amp"))
+        text_msg += '<a href="%s">%s</a>\n' % (url, url.replace(
+            "<", "&lt").replace(">", "&gt").replace("&", "&amp"))
     # Telegram Skip message
     #text_msg += bleach.clean(text, tags=['a','b','i','strong','code','pre'], strip=True)[:200]
-    
+
     # TODO: Fix photo timeout bug
     #soup = BeautifulSoup(text, 'html.parser')
     #for img in soup.find_all("img"):

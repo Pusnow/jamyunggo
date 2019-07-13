@@ -1,10 +1,13 @@
 """
 Main Jamyunggo
 """
+import os
+import urllib.parse
+
 import requests
 from bs4 import BeautifulSoup
-import urllib.parse
-import config
+
+from config import config
 
 
 class Jamyunggo:
@@ -12,7 +15,6 @@ class Jamyunggo:
     Main Jamyunggo class
     One jamyunggo for one URL
     """
-
     def __init__(self,
                  module_name,
                  backends,
@@ -95,16 +97,18 @@ class Jamyunggo:
         self.save_cache()
 
     def save_cache(self):
-        with open(
-                "cache/" + self.module_name + ".cache", "w",
-                encoding="utf8") as cache:
+        with open(os.path.join(config["CACHE_DIR"],
+                               self.module_name + ".cache"),
+                  "w",
+                  encoding="utf8") as cache:
             cache.write(self.cached_last)
 
     def load_cache(self):
         try:
-            with open(
-                    "cache/" + self.module_name + ".cache", "r",
-                    encoding="utf8") as cache:
+            with open(os.path.join(config["CACHE_DIR"],
+                                   self.module_name + ".cache"),
+                      "r",
+                      encoding="utf8") as cache:
                 self.cached_last = cache.read()
         except FileNotFoundError:
             self.cached_last = ""
@@ -130,12 +134,11 @@ class Jamyunggo:
             if backend in backend_list:
                 module = backend_list[backend]
 
-                return module.notify(
-                    self.module_name,
-                    title,
-                    url=url,
-                    text=text,
-                    name=self.name)
+                return module.notify(self.module_name,
+                                     title,
+                                     url=url,
+                                     text=text,
+                                     name=self.name)
 
     def img_src_replace(self, body_url, body):
         for img in body.find_all("img"):

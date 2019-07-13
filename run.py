@@ -1,18 +1,15 @@
 """
 Init file for Jamyunggo
 """
+
 from jamyunggo import Loader
-import config
-import time
 
-loader = Loader()
 
-if config.INTERVAL:
-    while True:
-        loader.load()
-        loader.run()
-        time.sleep(config.INTERVAL)
-
-else:
+def main():
+    loader = Loader()
     loader.load()
     loader.run()
+
+
+if __name__ == "__main__":
+    main()
