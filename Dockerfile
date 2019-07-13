@@ -21,4 +21,6 @@ VOLUME ["/config", "/data"]
 
 WORKDIR /app
 
-CMD ["sh"]
+COPY        entrypoint.sh /
+RUN         chmod +x /entrypoint.sh
+ENTRYPOINT  ["/entrypoint.sh"]
