@@ -1,21 +1,24 @@
 import bleach
-import telegram
 from bs4 import BeautifulSoup
 
+import telegram
 from config import config
 
-BOT = telegram.Bot(token=config["TELEGRAM"]["TOKEN"])
-USER_WHITELIST = set([a.lower() for a in config["TELEGRAM"]["WHITELIST"]])
-CHAT_SET = set(config["TELEGRAM"]["CHAT_ID"])
-for update in BOT.get_updates():
-    if update['message']['chat']['username'].lower() in USER_WHITELIST:
-        CHAT_SET.add(update['message']['chat']['id'])
+if config["TELEGRAM"]["ENABLED"]:
+    BOT = telegram.Bot(token=config["TELEGRAM"]["TOKEN"])
+    USER_WHITELIST = set([a.lower() for a in config["TELEGRAM"]["WHITELIST"]])
+    CHAT_SET = set(config["TELEGRAM"]["CHAT_ID"])
+    for update in BOT.get_updates():
+        if update['message']['chat']['username'].lower() in USER_WHITELIST:
+            CHAT_SET.add(update['message']['chat']['id'])
 
-with open(config["TELEGRAM"]["CONFIG"], "w") as telegram_last:
-    telegram_last.write("\n".join([str(id) for id in CHAT_SET]))
+    with open(config["TELEGRAM"]["CONFIG"], "w") as telegram_last:
+        telegram_last.write("\n".join([str(id) for id in CHAT_SET]))
 
 
 def notify(module_name, title, text=None, url=None, name=None):
+    if not config["TELEGRAM"]["ENABLED"]:
+        return False
     if name:
         text_msg = "<b>[%s]%s</b>\n" % (name, title.replace(
             "<", "&lt").replace(">", "&gt").replace("&", "&amp"))

@@ -6,7 +6,8 @@ from config import config
 
 
 def notify(module_name, title, text=None, url=None, name=None):
-
+    if not config["GMAIL"]["ENABLED"]:
+        return False
     with smtplib.SMTP_SSL('smtp.gmail.com') as s:
         s.login(config["GMAIL"]["ID"], config["GMAIL"]["PW"])
 
