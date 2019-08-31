@@ -51,7 +51,6 @@ class Jamyunggo:
         return "<Jamyunggo %s >" % self.url
 
     def run(self, backend_list):
-
         if self.headers:
             main_html = self.session.get(self.url, headers=self.headers)
         else:
