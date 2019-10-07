@@ -11,4 +11,4 @@ fi
 git -C $GIT_DIR pull
 
 cd /app
-JAMYUNGGO_CONFIG=/config/config.json python3 run.py
+JAMYUNGGO_CONFIG=/app/config.json python3 run.py

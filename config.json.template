@@ -20,6 +20,9 @@
         "CHAT_ID": [],
         "CONFIG": "/data/telegram_last.txt"
     },
+    "DUMMY": {
+        "ENABLED": false
+    },
     "REPOS": [
         "pages"
     ]
