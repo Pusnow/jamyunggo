@@ -1,8 +1,17 @@
-FROM alpine:3.10
+FROM debian:buster-slim
 MAINTAINER Wonsup Yoon <pusnow@me.com>
 
-RUN apk upgrade --no-cache
-RUN apk add --no-cache git python3 build-base python3-dev libffi-dev openssl-dev openssh
+RUN apt-get update && apt-get install -y \
+    git \
+    python3 \
+    build-essential \
+    python3-dev \
+    python3-pip \
+    python3-dateutil \
+    ssh \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 COPY requirements.txt /app/
 
