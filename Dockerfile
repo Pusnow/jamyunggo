@@ -14,12 +14,31 @@ COPY run.py /app/
 COPY run.sh /app/
 COPY config.py /app/
 
+ENV CACHE_DIR "data/cache/"
+ENV REPO_DIR "data/pages/"
 ENV REPO ""
 
-VOLUME ["/data"]
+ENV GMAIL_ENABLED "0"
+ENV GMAIL_ID ""
+ENV GMAIL_PW ""
+ENV GMAIL_RECEIVERS ""
+
+ENV SMTP_ENABLED "0"
+ENV SMTP_SERVER ""
+ENV SMTP_ID ""
+ENV SMTP_PW ""
+ENV SMTP_RECEIVERS ""
+
+ENV TELEGRAM_ENABLED "0"
+ENV TELEGRAM_TOKEN ""
+ENV TELEGRAM_WHITELIST ""
+ENV TELEGRAM_CHAT_ID ""
+ENV TELEGRAM_CONFIG ""
+
+ENV DUMMY_ENABLED "0"
+
+VOLUME ["/app/data"]
 
 WORKDIR /app
 
-COPY        entrypoint.sh /
-RUN         chmod +x /entrypoint.sh
-ENTRYPOINT  ["/entrypoint.sh"]
+CMD  ["/app/run.sh"]
