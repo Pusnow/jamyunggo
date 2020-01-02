@@ -2,11 +2,9 @@
 
 cd "$(dirname "$0")"
 
-REPO_DIR="${REPO_DIR}"
-REPO="${REPO}"
-
 if [ ! -d $REPO_DIR ]; then
-    mkdir -p $REPO_DIR
+    echo "Make dir: $REPO_DIR"
+
     git clone $REPO $REPO_DIR
 fi
 
