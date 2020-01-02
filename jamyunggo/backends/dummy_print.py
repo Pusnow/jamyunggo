@@ -1,9 +1,9 @@
 from config import config
 
+NAME = "DUMMY"
+
 
 def notify(module_name, title, text=None, url=None, name=None):
-    if not config["DUMMY"]["ENABLED"]:
-        return False
     print("MODULE_NAME:", module_name)
     if name:
         print("NAME:", name)

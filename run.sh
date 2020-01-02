@@ -1,14 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
-GIT_DIR=/app/pages
-GIT_REPO="${REPO}"
+cd "$(dirname "$0")"
 
-if [ ! -d $GIT_DIR ]
-then
-    git clone $GIT_REPO  $GIT_DIR
+REPO_DIR="${REPO_DIR}"
+REPO="${REPO}"
+
+if [ ! -d $REPO_DIR ]; then
+    mkdir -p $REPO_DIR
+    git clone $REPO $REPO_DIR
 fi
 
-git -C $GIT_DIR pull
+git -C $REPO_DIR pull
 
-cd /app
-JAMYUNGGO_CONFIG=/app/config.json python3 run.py
+export PAGES="$REPO_DIR"
+python3 run.py

@@ -1,10 +1,12 @@
 import bleach
+import telegram
 from bs4 import BeautifulSoup
 
-import telegram
 from config import config
 
-if config["TELEGRAM"]["ENABLED"]:
+NAME = "TELEGRAM"
+
+if "TELEGRAM" in config:
     BOT = telegram.Bot(token=config["TELEGRAM"]["TOKEN"])
     USER_WHITELIST = set([a.lower() for a in config["TELEGRAM"]["WHITELIST"]])
     CHAT_SET = set(config["TELEGRAM"]["CHAT_ID"])
@@ -17,8 +19,7 @@ if config["TELEGRAM"]["ENABLED"]:
 
 
 def notify(module_name, title, text=None, url=None, name=None):
-    if not config["TELEGRAM"]["ENABLED"]:
-        return False
+
     if name:
         text_msg = "<b>[%s]%s</b>\n" % (name, title.replace(
             "<", "&lt").replace(">", "&gt").replace("&", "&amp"))

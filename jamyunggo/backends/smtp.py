@@ -6,11 +6,10 @@ from email.utils import formataddr
 
 from config import config
 
+NAME = "SMTP"
+
 
 def notify(module_name, title, text=None, url=None, name=None):
-
-    if not config["SMTP"]["ENABLED"]:
-        return False
     with smtplib.SMTP_SSL(config["SMTP"]["SERVER"]) as s:
         s.login(config["SMTP"]["ID"], config["SMTP"]["PW"])
 

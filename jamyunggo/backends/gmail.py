@@ -4,10 +4,10 @@ from email.mime.text import MIMEText
 
 from config import config
 
+NAME = "GMAIL"
+
 
 def notify(module_name, title, text=None, url=None, name=None):
-    if not config["GMAIL"]["ENABLED"]:
-        return False
     with smtplib.SMTP_SSL('smtp.gmail.com') as s:
         s.login(config["GMAIL"]["ID"], config["GMAIL"]["PW"])
 
