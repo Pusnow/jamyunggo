@@ -34,7 +34,8 @@ if int(os.environ['TELEGRAM_ENABLED']) == 1:
     ]
 
     config["TELEGRAM"]["CHAT_ID"] = [
-        chatid.strip() for chatid in os.environ['TELEGRAM_CHAT_ID'].split(",")
+        int(chatid.strip())
+        for chatid in os.environ['TELEGRAM_CHAT_ID'].split(",")
     ]
     config["TELEGRAM"]["CONFIG"] = os.environ['TELEGRAM_CONFIG'].strip()
 
