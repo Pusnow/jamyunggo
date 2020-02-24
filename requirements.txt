@@ -1,4 +1,4 @@
 beautifulsoup4==4.6.0
 requests>=2.20.0
 python-telegram-bot==11.1.0
-bleach==2.1.4
+bleach==3.1.1
