@@ -44,9 +44,8 @@ if int(os.environ['NEXTCLOUD_ENABLED']) == 1:
     config["NEXTCLOUD"]["HOST"] = os.environ["NEXTCLOUD_HOST"]
     config["NEXTCLOUD"]["ID"] = os.environ["NEXTCLOUD_ID"]
     config["NEXTCLOUD"]["PW"] = os.environ["NEXTCLOUD_PW"]
-    config["TELEGRAM"]["TO"] = [
-        next_to.strip()
-        for next_to in os.environ['NEXTCLOUD_TO'].split(",")
+    config["NEXTCLOUD"]["TO"] = [
+        next_to.strip() for next_to in os.environ['NEXTCLOUD_TO'].split(",")
     ]
 
 if int(os.environ['DUMMY_ENABLED']) == 1:
