@@ -22,5 +22,11 @@ export TELEGRAM_WHITELIST=""
 export TELEGRAM_CHAT_ID=""
 export TELEGRAM_CONFIG=""
 
+export NEXTCLOUD_ENABLED=0
+export NEXTCLOUD_HOST=""
+export NEXTCLOUD_ID=""
+export NEXTCLOUD_PW=""
+export NEXTCLOUD_TO=""
+
 export DUMMY_ENABLED=0
 ./run.sh
