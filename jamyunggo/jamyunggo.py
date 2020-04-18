@@ -32,12 +32,15 @@ class Jamyunggo:
                                                  "HEADERS") else {}
         self.module.LOAD(self.cached_last)
 
+        force = self.module.FORCE if hasattr(self.module, "FORCE") else False
+        verify = not force
         for url in self.module.URLS:
-
             if headers:
-                main_html = self.session.get(url, headers=headers)
+                main_html = self.session.get(url,
+                                             headers=headers,
+                                             verify=verify)
             else:
-                main_html = self.session.get(url)
+                main_html = self.session.get(url, verify=verify)
 
             main_text = main_html.text
             main_soup = BeautifulSoup(main_text, 'html.parser')
