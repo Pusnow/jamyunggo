@@ -3,7 +3,7 @@
 export CACHE_DIR="data/cache/"
 
 export REPO_DIR="data/pages/"
-export REPO=""
+export REPO="git@gitlab.com:Pusnow/jamyunggo-privates.git"
 
 export GMAIL_ENABLED=0
 export GMAIL_ID=""
@@ -28,5 +28,9 @@ export NEXTCLOUD_ID=""
 export NEXTCLOUD_PW=""
 export NEXTCLOUD_TO=""
 
-export DUMMY_ENABLED=0
+export SLACK_ENABLED=0
+export SLACK_WEBHOOK=""
+
+export DUMMY_ENABLED=1
+
 ./run.sh

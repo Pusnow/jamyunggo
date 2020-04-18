@@ -48,5 +48,9 @@ if int(os.environ['NEXTCLOUD_ENABLED']) == 1:
         next_to.strip() for next_to in os.environ['NEXTCLOUD_TO'].split(",")
     ]
 
+if int(os.environ['SLACK_ENABLED']) == 1:
+    config["SLACK"] = {}
+    config["SLACK"]["WEBHOOK"] = os.environ["SLACK_WEBHOOK"]
+
 if int(os.environ['DUMMY_ENABLED']) == 1:
     config["DUMMY"] = {}
