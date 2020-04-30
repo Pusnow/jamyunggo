@@ -2,8 +2,7 @@ FROM debian:buster-slim
 MAINTAINER Wonsup Yoon <pusnow@me.com>
 
 RUN cd /etc/apt && \
-    sed -i 's/deb.ubuntu.org/mirror.kakao.com/g' sources.list && \
-    sed -i 's/deb.ubuntu.org/mirror.kakao.com/g' sources.list.d/proposed.list
+    sed -i 's/deb.ubuntu.org/mirror.kakao.com/g' sources.list &&
 
 RUN apt-get update && apt-get install -y \
     git \
