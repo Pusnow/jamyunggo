@@ -49,6 +49,9 @@ class Loader:
 
     def run(self):
         for jamyunggo in self.jamyunggo_list:
-            jamyunggo.run()
+            try:
+                jamyunggo.run()
+            except:
+                print("ERROR: %s" % jamyunggo.module_name)
 
         print("[%s] Done" % datetime.now())
