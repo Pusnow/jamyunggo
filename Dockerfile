@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM python:3.8-slim-buster
 MAINTAINER Wonsup Yoon <pusnow@me.com>
 
 RUN cd /etc/apt && \
@@ -6,12 +6,6 @@ RUN cd /etc/apt && \
 
 RUN apt-get update && apt-get install -y \
     git \
-    python3 \
-    build-essential \
-    python3-dev \
-    python3-pip \
-    python3-dateutil \
-    ssh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
