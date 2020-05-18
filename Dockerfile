@@ -1,4 +1,4 @@
-FROM python:3.8-slim-buster
+FROM pusnow/python:slim-buster
 MAINTAINER Wonsup Yoon <pusnow@me.com>
 
 RUN cd /etc/apt && \
