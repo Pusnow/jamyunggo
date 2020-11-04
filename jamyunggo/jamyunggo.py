@@ -8,7 +8,6 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
-
 from config import config
 
 
@@ -48,8 +47,12 @@ class Jamyunggo:
             scope = self.module.SCOPE if hasattr(self.module, "SCOPE") else {}
 
             nodes = []
-            for scope_node in main_soup.find_all(**scope):
-                for node in self.module.LIST(scope_node):
+            if scope:
+                for scope_node in main_soup.find_all(**scope):
+                    for node in self.module.LIST(scope_node):
+                        nodes.append(node)
+            else:
+                for node in self.module.LIST(main_soup):
                     nodes.append(node)
 
             for node in nodes:
@@ -83,7 +86,6 @@ class Jamyunggo:
             self.cached_last = None
 
     def notify(self, name, title, url, backends):
-
         for backend in backends:
             if backend in self.backend_list:
                 module = self.backend_list[backend]
@@ -94,6 +96,13 @@ class Jamyunggo:
                                      title,
                                      url=url,
                                      name=name)
+        if "DUMMY" in config:
+            module = self.backend_list["dummy_print"]
+
+            print("[%s] Nofify[%s]:  [%s] %s" %
+                  (datetime.now(), self.module_name, name, title))
+
+            return module.notify(self.module_name, title, url=url, name=name)
 
     def img_src_replace(self, body_url, body):
         for img in body.find_all("img"):
